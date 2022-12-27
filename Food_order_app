@@ -1,0 +1,331 @@
+#import random 
+#import string
+Admin_Registration_Data = {}
+Food_Items_with_id = {}
+User_Registration_Data = {}
+User_Ordered_Food_Item = {}
+
+def main():
+    print("**********WELCOME TO sai mohan  SNAP FOOD STORE**********")
+    while True:
+        try:
+            option = int(input("Please select the following:\n1.ADMIN\n2.USER\n3.EXIT \n"))
+            if option == 1:
+                Admin() # admin() functions
+            elif option == 2:
+                User() # user() functions
+            elif option == 3:
+                break
+            else:
+                print("Enter the valid option")
+        except ValueError :
+            print("Enter the values not the charecter")
+
+
+def Admin():
+    print("\n********** WELCOME ADMIN ***********\n")
+    while True:
+        try:   
+            option = int(input("Please select the following \n1.ADMIN REGISTRATON\n2.ADMIN LOGIN\n3.EXIT\n"))
+            if option == 1:
+                Admin_Registration()
+            elif option == 2:
+                Admin_Login()
+            elif option == 3:
+                break
+            else:
+                print("Enter the valid option")
+        except:
+            print("Enter the values not the charecter")
+
+
+
+def Admin_Registration():
+    print("\nWELCOME TO ADMIN REGISTRATION\n")
+    email = input("Enter the Email ID to register\n")
+    password = input("Enter the password\n")
+
+    Admin_Registration_Data["email"] = email
+    Admin_Registration_Data["password"] = password
+
+    print(" \nADMIN REGISTERED SUCESSFULLY !\n")
+
+    for i in Admin_Registration_Data: 
+        print(f"Your {i} = {Admin_Registration_Data[i]}")
+        
+        
+        
+def Admin_Login():
+        print("********** ADMIN LOGIN **********")
+        if any(Admin_Registration_Data):
+            email = input("Enter the registered email\n")
+            password = input("Enter the password\n")
+            if Admin_Registration_Data["email"]==email and Admin_Registration_Data["password"]==password:
+                print("\nYOU ARE LOOGED IN!\n")
+                while True:
+                    print("\n*WHAT YOU WANT TO DO*\n \n1.ADD FOOD\n2.EDIT FOOD\n3.VIEW FOOD\n4.DELETE FOOD\n5.EXIT")
+                    option = int(input("Enter the options listed above\n"))
+                    if option == 1:
+                        Add_food()
+                    elif option == 2:
+                        Edit_food()
+                    elif option == 3:
+                        View_food()
+                    elif option == 4:
+                        Delete_food()
+                    elif option == 5:
+                        break
+                    else:
+                        print("Enter the valid option")
+            else:
+                print("Enter the valid Passsword or email")
+        else:
+            print("* NO ADMIN DATA FOUND NEED TO BE REGISTERED FIRST *")
+
+
+def Add_food():
+    print("\n***** Enter your Food Items *****\n")
+    try:
+        food_name = input("Enter the Food name\n")
+        food_quantity = int(input("Enter the Food quantity only numbers\n"))
+        food_price =  int(input("Enter the Food price only numbers\n"))
+        food_stock = int(input("Enter the Food stock only numbers\n"))
+        
+        food_details = {"name" : food_name , "quantity" : food_quantity , "price" : food_price , "stock" : food_stock }
+        food_id = len(Food_Items_with_id)+1
+        Food_Items_with_id[food_id] = food_details
+        print(f"food list preview = {Food_Items_with_id}")
+    except:
+        print("Enter the number not string")
+        
+
+def Edit_food():
+    print("\n** FOOD EDIT SECTION **\n")
+    if any(Food_Items_with_id):
+        print(Food_Items_with_id)
+        try:
+            ID = int(input("Enter the Food ID that you want to edit:\n"))
+            if ID in Food_Items_with_id.keys():
+                print("** ID FOUND **")
+                while True:
+                    try:
+                        option = int(input("Please select the options:\n1.EDIT NAME\n2.EDIT QUANTITY\n3.EDIT PRICE\n4.EDIT STOCK\n5.EXIT\n"))
+                        if option == 1:
+                            Food_Items_with_id[ID]["name"] = input("Edit your food name: ")
+                            print(f" After update = {Food_Items_with_id}")
+                        elif option == 2:
+                            Food_Items_with_id[ID]["quantity"] = int(input("Edit your quantity (only number): "))
+                            print(f" After update = {Food_Items_with_id}")
+                        elif option == 3:
+                            Food_Items_with_id[ID]["price"] = int(input("Edit your price (only number): "))
+                            print(f" After update = {Food_Items_with_id}")
+                        elif option == 4:
+                            Food_Items_with_id[ID]["stock"] = int(input("Edit your stock (only number): "))
+                            print(f" After update = {Food_Items_with_id}")
+                        elif option == 5:
+                            break
+                        else:
+                            print("Enter the valid option")
+                    except:
+                        print("Enter the number not chatrecter")      
+            else: 
+                print("ID NOT FOUND ENTER VALID ID")
+        except:
+            print("Enter number not charecter") 
+    else:
+        print("*** SORRY! FOOD LIST IS EMPTY TO EDIT PLZ ADD FOOD AND TRY AGAIN **")
+        
+
+def View_food():
+    print("\n** FOOD LIST AND DETAILS **\n")
+
+    for i in Food_Items_with_id:
+        print(f"ID = {i}.Food name -" , Food_Items_with_id[i]["name"])
+        print(f"       Food quantity -", Food_Items_with_id[i]["quantity"])
+        print(f"       Food price -", Food_Items_with_id[i]["price"])
+        print(f"       Food stock -", Food_Items_with_id[i]["stock"])
+        print("\n")
+
+
+def Delete_food_view():
+    for i in Food_Items_with_id:
+        print(f"ID = {i}.Food name -" , Food_Items_with_id[i]["name"])
+        print(f"       Food quantity -", Food_Items_with_id[i]["quantity"])
+        print(f"       Food price -", Food_Items_with_id[i]["price"])
+        print(f"       Food stock -", Food_Items_with_id[i]["stock"])
+        print("\n")
+    
+
+def Delete_food():
+    print("** FOOD DATA WILL BE LOST **")
+    if any(Food_Items_with_id):
+        option = int(input("ARE YOU SURE ?\n1.YES\n2.NO\n"))
+        if option == 1:
+            ID = int(input("Enter the Food ID:\n"))
+            if ID in Food_Items_with_id.keys():
+                del Food_Items_with_id[ID]
+                print("\n*UPDATED DATA*\n")
+                Delete_food_view()
+            else:
+                print("** ENTER VALID ID! **")
+        elif option == 2:
+            print("\n* NO CHANGES MADE *\n")
+    else:
+        print("\n** NO FOOD DATA FOUND TO DELETE **\n")
+
+   
+def User():
+    print("\n********** WELCOME USER ***********\n")
+    while True:
+        try:
+            option = int(input("\nPlease select the following \n1.USER REGISTRATON\n2.USER LOGIN\n3.EXIT\n"))
+            if option == 1:
+                User_Registration()
+            elif option == 2:
+                User_Login()
+            elif option == 3:
+                break
+            else:
+                print("Enter the valid option")
+        except:
+            print("Enter the values not the charecter")
+
+
+def User_Registration():
+    print("\n***HELLO USER!***\n")
+    try:
+        user_name = input("Enter your Full name:\n")
+        user_phone_number = int(input("Enter the 10 digit phone number:\n"))
+        user_email =  input("Enter your Email ID:\n")
+        user_address = input("Enter your Address:\n")
+        user_password = input("Enter your password:\n")
+        
+        User_Registration_Data["name"]=user_name
+        User_Registration_Data["phone_number"]=user_phone_number
+        User_Registration_Data["email"]=user_email
+        User_Registration_Data["address"]=user_address
+        User_Registration_Data["password"]=user_password
+        for i in User_Registration_Data:
+            print(f"Your {i} = {User_Registration_Data[i]}")
+    except:
+        print("Enter the number not string")
+        
+
+
+
+def User_Login():
+    print("********** USER LOGIN **********")
+    if any(User_Registration_Data):
+        email = input("Enter the registered email\n")
+        password = input("Enter the password\n")
+        if User_Registration_Data["email"]==email and User_Registration_Data["password"]==password:
+            print("\nYOU ARE LOOGED IN!\n")
+            while True:
+                option = int(input("\n*WHAT YOU WANT TO DO*\n \n1.PLACE ORDER\n2.ORDER HISTORY\n3.UPDATE PROFILE\n4.EXIT"))
+                if option == 1:
+                    Place_order()
+                elif option == 2:
+                    Order_history()
+                elif option == 3:
+                    Update_profile()
+                elif option == 4:
+                    break
+                else:
+                    print("Enter the valid option")
+        else:
+            print("Enter the valid Passsword or email")
+    else:
+        print("* NO USER DATA FOUND NEED TO BE REGISTERED FIRST *")
+
+
+
+def Place_order():
+    print("\n**PLACE ORDER**\n")
+    try:
+        if any(Food_Items_with_id)!=0:
+            print("LIST OF AVAILABLE FOOD ITEMS :\n")
+            menu=[]
+            for items in Food_Items_with_id:
+                menu.append([Food_Items_with_id[items]["name"], Food_Items_with_id[items]["quantity"],Food_Items_with_id[items]["price"]]) 
+            for i in range(len(menu)):
+                print(i+1,".",menu[i])
+            while True:
+                print("\n\t1. CONTINUE ORDER\n\t2. GO BACK\n")
+                x=input()
+                if x=="1":
+                    print("Enter the Food number You want to ordered separated by comma")
+                    y=input().split(",")
+                    for i in y:
+                        z=int(i)
+                        if z<=len(menu):
+                            User_Ordered_Food_Item.append(menu[z-1])
+                        else:
+                            print("\nFOOD ITEM NOT AVAILABLE  : ",z)
+                        print("\nLIST OF FOOD ITEMS SELECTED : \n")
+                    for j in User_Ordered_Food_Item:
+                        print(j)
+                elif x=="2":
+                    break
+                else:
+                    print("!! NOT A VALID OPTION !!\n")
+        else:
+            print("\n!! FOOD ITEMS ARE NOT AVAILABLE !!\n")      
+    except Exception as e:
+        print("\n!! PLEASE PROVIDE CORRECT INPUT !!")     
+                
+
+def Order_history():
+    print("you are in the Order history portal")
+    if len(User_Ordered_Food_Item)!=0:
+        print("\nLIST OF PREVIOUS ORDERED FOOD ITEMS : \n")
+        for i in User_Ordered_Food_Item:
+            print(i)
+    else:
+        print("\n!! ORDER HISTORY NOT AVAILABLE !!")
+
+
+
+
+def Update_profile():
+    print("you are in the update profile portal")
+    for i in User_Registration_Data:
+        print(f"{i}: {User_Registration_Data[i]}")
+
+    while True:
+    
+        try:
+            print("What would you like to update from the options below: ")
+            options = int(input("\n1.Name\n2.Phone Number\n3.Email ID\n4.Password\n5.Address\n6.GO BACK\n:"))
+
+            if options == 1:
+                User_Registration_Data["full_name"] = input("Enter your updated full name: ")
+                print("\nName updated successfully\n")
+
+            elif options == 2:
+                User_Registration_Data["phone_number"] = input("Enter your updated phone number: ")
+                print("\Phone Number updated successfully\n")
+
+            elif options == 3:
+                User_Registration_Data["email"] = input("Enter your updated email: ")
+                print("\nEmail updated successfully\n")
+
+            elif options == 4:
+                User_Registration_Data["password"] = input("Enter your updated password: ")
+                print("\Password updated successfully\n")
+
+            elif options == 5:
+                User_Registration_Data["address"] = input("Enter your updated address: ")
+                print("\nAddress updated successfully\n")
+                
+            elif options == 6: 
+                break
+
+            else:
+                print("\nPlease choose from the available options")
+        except ValueError:
+            print("\nPlease enter a valid input")
+
+if __name__ == "__main__":
+    main()
+
+print("**********Thank you for visiting sai mohan (SNAP STORE !)**********")
